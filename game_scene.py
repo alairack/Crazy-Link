@@ -42,25 +42,35 @@ class GameBackgroundLayer(ColorLayer):
         window_scale_x = current_window_size[0] / director.get_window_size()[0]
         window_scale_y = current_window_size[1] / director.get_window_size()[1]
         sprite_x = math.floor((x - self.position[0])/(setting.square_size + 2)/ window_scale_x)     # 取整
-        sprite_y = math.floor((y - self.position[1])/(setting.square_size+ 2)/ window_scale_y)
-        click_sprite = self.batch.get(f"{sprite_y, sprite_x}")
-        if len(self.selected_block) % 2 == 0:
-            click_sprite.click(self.click_anime)
-            self.selected_block.append([click_sprite, sprite_x, sprite_y])
+        sprite_y = math.floor((y - self.position[1])/(setting.square_size + 2)/ window_scale_y)
+        try:
+            click_sprite = self.batch.get(f"{sprite_y, sprite_x}")
+        except Exception:
+            pass
         else:
-            if sprite_x == self.selected_block[-1][1] and sprite_y == self.selected_block[-1][2]:
-                pass                            # 如果选取的方块和上一次选取的方块相同，则略过
-            else:
-                if judge_remove(self.selected_block[0], click_sprite) :
-                    self.batch.remove(self.selected_block[0])
-                    self.batch.remove(click_sprite)
-                    self.board.array[sprite_y][sprite_x] = 0
-                    self.board.array[self.selected_block[0][2]][self.selected_block[0][1]] = 0
-                    click_sprite.un_click(self.selected_block[0][0], self.click_anime[0])
-                else:
+            if self.board.array[sprite_y][sprite_x] != 0:
+                if len(self.selected_block) % 2 == 0:
                     click_sprite.click(self.click_anime)
                     self.selected_block.append([click_sprite, sprite_x, sprite_y])
-                    click_sprite.do(Delay(0.7) + CallFunc(self.un_click_block, click_sprite) * 2)
+                else:
+                    if sprite_x == self.selected_block[-1][1] and sprite_y == self.selected_block[-1][2]:
+                        pass  # 如果选取的方块和上一次选取的方块相同，则略过
+                    else:
+                        if judge_remove([self.selected_block[0][2], self.selected_block[0][1]], [sprite_y, sprite_x], self.board.array):
+                            click_sprite.un_click(self.selected_block[0][0], self.click_anime[0])
+                            self.batch.remove(self.selected_block[0][0])
+                            self.batch.remove(click_sprite)
+                            self.board.array[sprite_y][sprite_x] = 0
+                            self.board.array[self.selected_block[0][2]][self.selected_block[0][1]] = 0
+                            self.selected_block.pop(0)
+                            self.click_anime.pop(0)
+                        else:
+                            click_sprite.click(self.click_anime)
+                            self.selected_block.append([click_sprite, sprite_x, sprite_y])
+                            click_sprite.do(Delay(0.7) + CallFunc(self.un_click_block, click_sprite) * 2)
+            else:
+                pass
+
 
     def un_click_block(self, click_sprite):
         click_sprite.un_click(self.selected_block[0][0], self.click_anime[0])
