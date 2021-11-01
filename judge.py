@@ -51,31 +51,21 @@ def a_straight_line(sprite1_position, sprite2_position, array):
 def one_turn(sprite1_position, sprite2_position, array):
     print(sprite1_position, sprite2_position)
     if sprite1_position[0] < sprite2_position[0] and sprite1_position[1] < sprite2_position[1]:
-        print(1)
         corner_1 = [max(sprite1_position[0], sprite2_position[0]), min(sprite2_position[1], sprite1_position[1])]
         corner_2 = [min(sprite1_position[0], sprite2_position[0]), max(sprite2_position[1], sprite1_position[1])]
     elif sprite2_position[0] < sprite1_position[0] and sprite2_position[1] < sprite1_position[1]:
-        print(2)
         corner_1 = [max(sprite1_position[0], sprite2_position[0]), min(sprite2_position[1], sprite1_position[1])]
         corner_2 = [min(sprite1_position[0], sprite2_position[0]), max(sprite2_position[1], sprite1_position[1])]
     else:
-        print(3)
         corner_1 = [max(sprite1_position[0], sprite2_position[0]), max(sprite2_position[1], sprite1_position[1])]
         corner_2 = [min(sprite1_position[0], sprite2_position[0]), min(sprite2_position[1], sprite1_position[1])]
-    print(corner_1)
-    print(corner_2)
     if array[corner_1[0]][corner_1[1]] == 0:
         if a_straight_line(sprite1_position, corner_1, array):
-            print(4)
             if a_straight_line(sprite2_position, corner_1, array):
-                print(5)
                 return True
     if array[corner_2[0]][corner_2[1]] == 0:
-        print(6)
         if a_straight_line(sprite1_position, corner_2, array):
-            print(7)
             if a_straight_line(sprite2_position, corner_2, array):
-                print(8)
                 return True
             else:
                 return False
@@ -91,7 +81,7 @@ def two_turn(sprite1_position, sprite2_position, array):
     try:
         while array[sprite1_position[0] - i + 1][sprite1_position[1]] == 0 and sprite1_position[0] - i + 1 > -1:
             if one_turn([sprite1_position[0] - i + 1, sprite1_position[1]], [sprite2_position[0] + 1, sprite2_position[1]], array):
-                array.pop(0)
+                array.pop(0)                 # +1是在前面插入空行后，索引值依次+1
                 return True
             i = i + 1
     except IndexError:

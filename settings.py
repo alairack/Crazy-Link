@@ -17,6 +17,9 @@ class Settings:
                        'pear', 'strawberry', 'watermelon']
         self.square_size = 32      # 贴图大小
         self.click_anime = pyglet.resource.animation("res/click2.gif")
+        self.click_sound = pyglet.resource.media("res/click.wav", streaming=False)
+        self.un_click_sound = pyglet.resource.media("res/unclick.wav", streaming=False)
+        self.remove_sound = pyglet.resource.media("res/remove_block.wav", streaming=False)
         self.fruit_images = []
         for x in self.fruits:
             image = pyglet.resource.image(f"res/fruit/{x}.png")

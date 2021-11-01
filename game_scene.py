@@ -59,6 +59,7 @@ class GameBackgroundLayer(ColorLayer):
                         if judge_remove([self.selected_block[0][2], self.selected_block[0][1]], [sprite_y, sprite_x],
                                         self.board.array):
                             click_sprite.un_click(self.selected_block[0][0], self.click_anime[0])
+                            setting.remove_sound.play()
                             self.batch.remove(self.selected_block[0][0])
                             self.batch.remove(click_sprite)
                             self.board.array[sprite_y][sprite_x] = 0
@@ -140,6 +141,7 @@ class Block(cocos.sprite.Sprite):
         y = self._get_y()
         self.do(ScaleTo(0.85, 0.09))
         batch = self.get_ancestor(BatchNode)
+        setting.click_sound.play()
         sprite = cocos.sprite.Sprite(setting.click_anime)
         sprite.position = x, y
         batch.add(sprite, z=2)
@@ -148,6 +150,7 @@ class Block(cocos.sprite.Sprite):
     def un_click(self, selected_sprite, click_anime):
         batch = self.get_ancestor(BatchNode)
         batch.remove(click_anime)
+        setting.un_click_sound.play()
         selected_sprite.do(ScaleTo(1, 0.09))
         self.do(ScaleTo(1, 0.09))
 
