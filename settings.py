@@ -1,4 +1,5 @@
 import pyglet.resource
+import os
 
 
 class Settings:
@@ -20,3 +21,16 @@ class Settings:
         for x in self.fruits:
             image = pyglet.resource.image(f"res/fruit/{x}.png")
             self.fruit_images.append(image)
+
+
+class Logs(object):
+    def __init__(self):
+        self.log_file = None
+        self.open_log_file()
+
+    def open_log_file(self):
+        log_path = "./logs"
+        if not os.path.exists(log_path):
+            os.mkdir(os.getcwd() + r"\logs")
+        log_file = open(f"{log_path}/game_logs.txt", "a")
+        self.log_file = log_file

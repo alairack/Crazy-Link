@@ -7,6 +7,7 @@ from pyglet.app import exit
 from pyglet.gl import *
 from cocos.layer import Layer
 from game_scene import create_game_scene
+from settings import Logs
 
 
 class MainMenu(Menu):
@@ -35,6 +36,7 @@ class MainMenu(Menu):
         cocos.director.director.replace(game_scene)
 
     def on_quit(self):
+        Logs().log_file.close()
         exit()
 
 
