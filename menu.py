@@ -1,12 +1,11 @@
 import cocos.director
 import pyglet.resource
-
 from cocos.scene import Scene
 from cocos.menu import *
 from pyglet.app import exit
 from pyglet.gl import *
 from cocos.layer import Layer
-from game_scene import create_game_scene
+from game_scene import create_game_scene, setting
 from settings import Logs
 
 
@@ -33,6 +32,7 @@ class MainMenu(Menu):
 
     def on_play(self):
         game_scene = create_game_scene()
+        setting.menu_scene = create_menu()
         cocos.director.director.replace(game_scene)
 
     def on_quit(self):

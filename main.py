@@ -1,8 +1,12 @@
 from cocos.director import director
 from menu import create_menu
+from settings import Settings
 
 
-director.init(caption="连连看菜单", width=520, height=360, resizable=True)
+setting = Settings()
+
+director.init(caption="连连看", width=setting.level_info[setting.level]["column"] * (setting.square_size+2) + 30,
+              height=(setting.level_info[setting.level]["row"]+2) * (setting.square_size+2) + 60, resizable=True)
 menu_scene = create_menu()
 director.run(menu_scene)
 

@@ -2,6 +2,8 @@ import cocos.batch
 from cocos.scene import Scene
 from cocos.layer import ColorLayer
 from cocos.batch import BatchNode
+from game_win import WinLayer
+from game_over import GameOverLayer
 import random
 from settings import Settings
 import math
@@ -9,11 +11,13 @@ from cocos.director import director
 from cocos.actions import *
 from judge import *
 
+
 setting = Settings()
 
 
 def create_game_scene():
     scene = Scene()
+    scene.position = 15, 15
     scene.add(GameBackgroundLayer(), z=1)
     return scene
 
@@ -27,10 +31,9 @@ class GameBackgroundLayer(ColorLayer):
 
         self.board = Board()
         self.batch = cocos.batch.BatchNode()
-        self.batch.position = setting.square_size/2, setting.square_size/2          # 因为sprite 的position为中心点
+        self.batch.position = setting.square_size/2, setting.square_size/2         # 因为sprite 的position为中心点
         self.add(self.batch)
-        self.width = setting.level_info[0]["column"] * setting.square_size + 40
-        self.height = setting.level_info[0]["row"] * setting.square_size + 40
+
         self.board.draw(self.position, self.batch)
         self.click_anime = []
 
@@ -38,11 +41,15 @@ class GameBackgroundLayer(ColorLayer):
         super().draw()
 
     def on_mouse_press(self, x, y, dx, dy):
+        """
+        点击后事件，如遇点击与图标位置错位，同时图标绘制位置正常，极大概率是该处的 sprite_x , sprite_y 在计算时的问题。   2021.11.3
+        """
+        scene = self.get_ancestor(Scene)
         current_window_size = director._get_window_size_no_autoscale()
         window_scale_x = current_window_size[0] / director.get_window_size()[0]
         window_scale_y = current_window_size[1] / director.get_window_size()[1]
-        sprite_x = math.floor((x - self.position[0])/(setting.square_size + 2) / window_scale_x)     # 取整
-        sprite_y = math.floor((y - self.position[1])/(setting.square_size + 2) / window_scale_y)
+        sprite_x = math.floor((x - self.position[0] - scene.position[0])/(setting.square_size + 2) / window_scale_x)     # 取整
+        sprite_y = math.floor((y - self.position[1] - scene.position[1])/(setting.square_size + 2) / window_scale_y)
         try:
             click_sprite = self.batch.get(f"{sprite_y, sprite_x}")
         except Exception:
@@ -78,11 +85,28 @@ class GameBackgroundLayer(ColorLayer):
         self.click_anime.pop(0)
         self.selected_block.pop(0)
 
+    def next_level(self):
+        try:
+            setting.level = setting.level + 1
+            new_scene = create_game_scene()
+            window_location = director.window.get_location()
+            director.window.close()
+            director.init(caption="连连看",
+                        width=setting.level_info[setting.level]["column"] * (setting.square_size + 2) + 30,
+                        height=(setting.level_info[setting.level]["row"]) * (setting.square_size + 2) + 60, resizable= True,)
+            director.window.set_location(window_location[0], window_location[1])
+            director.run(new_scene)
+        except IndexError:
+            win_layer = WinLayer(setting)
+            current_scene = self.get_ancestor(Scene)
+            setting.level = 0
+            current_scene.add(win_layer, z=2)
+
 
 class Board:
     def __init__(self):
-        self.column = setting.level_info[0]["column"]
-        self.row = setting.level_info[0]["row"]
+        self.column = setting.level_info[setting.level]["column"]
+        self.row = setting.level_info[setting.level]["row"]
         self.array = [[0 for col in range(self.column)] for row in range(self.row)]
         self.sort_position = [[] for k in range(len(setting.fruits))]              # 分别存储每一类方块位置
         self.init_block()
@@ -125,11 +149,21 @@ class Board:
                 i = 0
                 k = k + 1
         i = 0
-        while i < (self.column * self.row)/2:
+        while i < (self.column * self.row)/2 and len(empty_position_list) > 0:
             random_num = random.randint(1, len(setting.fruits))
-            pair_fruit_generator(random_num)
-            pair_fruit_generator(random_num)
+            try:
+                pair_fruit_generator(random_num)
+                pair_fruit_generator(random_num)
+            except ValueError:
+                break
             i = i + 1
+
+    def is_block_exist(self):
+        for x in self.array:
+            for y in x:
+                if y != 0:
+                    return True
+        return False
 
 
 class Block(cocos.sprite.Sprite):
