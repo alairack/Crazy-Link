@@ -8,7 +8,7 @@ class HUDLayer(Layer):
     def __init__(self, setting):
         super().__init__()
         self.setting = setting
-        self.position = (0,(setting.level_info[setting.level]["row"]) * (setting.square_size+2))
+        self.position = (0, (setting.level_info[setting.level]["row"]) * (setting.square_size+2))
         self.time = self.setting.level_info[setting.level]["time"]
         self.remain_time = self.create_text(80, 5)
         self.count_time()

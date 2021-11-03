@@ -1,11 +1,12 @@
 import pyglet.resource
 import os
+from cocos.director import director
 
 
 class Settings:
     def __init__(self):
         self.level = 0
-        self.level_info = [{"level": 1, "time": 10, "row": 10, "column": 15},
+        self.level_info = [{"level": 1, "time": 100, "row": 10, "column": 15},
                            {"level": 2, "time": 120, "row": 11, "column": 16},
                            {"level": 3, "time": 140, "row": 12, "column": 17},
                            {"level": 4, "time": 160, "row": 13, "column": 18},
@@ -21,11 +22,23 @@ class Settings:
         self.click_sound = pyglet.resource.media("res/click.wav", streaming=False)
         self.un_click_sound = pyglet.resource.media("res/unclick.wav", streaming=False)
         self.remove_sound = pyglet.resource.media("res/remove_block.wav", streaming=False)
+        self.logo = pyglet.resource.image("res/logo.ico")
         self.fruit_images = []
         self.menu_scene = None
         for x in self.fruits:
             image = pyglet.resource.image(f"res/fruit/{x}.png")
             self.fruit_images.append(image)
+
+    def create_new_window(self, scene):
+        window_location = director.window.get_location()
+        director.window.close()
+        director.init(caption="连连看",
+                      width=self.level_info[self.level]["column"] * (self.square_size + 2) + 30,
+                      height=self.level_info[self.level]["row"] * (self.square_size + 2) + 60,
+                      resizable=True)
+        director.window.set_location(window_location[0], window_location[1])
+        director.window.set_icon(self.logo)
+        director.run(scene)
 
 
 class Logs(object):

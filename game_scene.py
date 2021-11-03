@@ -92,13 +92,7 @@ class GameBackgroundLayer(ColorLayer):
         try:
             setting.level = setting.level + 1
             new_scene = create_game_scene()
-            window_location = director.window.get_location()
-            director.window.close()
-            director.init(caption="连连看",
-                        width=setting.level_info[setting.level]["column"] * (setting.square_size + 2) + 30,
-                        height=setting.level_info[setting.level]["row"] * (setting.square_size + 2) + 60, resizable=True)
-            director.window.set_location(window_location[0], window_location[1])
-            director.run(new_scene)
+            setting.create_new_window(new_scene)
         except IndexError:
             self.disable_input()
             win_layer = WinLayer(setting)
