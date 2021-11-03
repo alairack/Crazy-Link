@@ -5,7 +5,7 @@ import os
 class Settings:
     def __init__(self):
         self.level = 0
-        self.level_info = [{"level": 1, "time": 100, "row": 10, "column": 15},
+        self.level_info = [{"level": 1, "time": 10, "row": 10, "column": 15},
                            {"level": 2, "time": 120, "row": 11, "column": 16},
                            {"level": 3, "time": 140, "row": 12, "column": 17},
                            {"level": 4, "time": 160, "row": 13, "column": 18},

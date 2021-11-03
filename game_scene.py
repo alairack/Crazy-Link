@@ -3,14 +3,13 @@ from cocos.scene import Scene
 from cocos.layer import ColorLayer
 from cocos.batch import BatchNode
 from game_win import WinLayer
-from game_over import GameOverLayer
 import random
 from settings import Settings
 import math
 from cocos.director import director
 from cocos.actions import *
 from judge import *
-
+from HUD import HUDLayer
 
 setting = Settings()
 
@@ -18,7 +17,8 @@ setting = Settings()
 def create_game_scene():
     scene = Scene()
     scene.position = 15, 15
-    scene.add(GameBackgroundLayer(), z=1)
+    scene.add(GameBackgroundLayer(), z=1, name="game_layer")
+    scene.add(HUDLayer(setting), z=2)
     return scene
 
 
@@ -36,6 +36,7 @@ class GameBackgroundLayer(ColorLayer):
 
         self.board.draw(self.position, self.batch)
         self.click_anime = []
+        self.stop_status = False
 
     def draw(self):
         super().draw()
@@ -44,6 +45,8 @@ class GameBackgroundLayer(ColorLayer):
         """
         点击后事件，如遇点击与图标位置错位，同时图标绘制位置正常，极大概率是该处的 sprite_x , sprite_y 在计算时的问题。   2021.11.3
         """
+        if self.stop_status:
+            return
         scene = self.get_ancestor(Scene)
         current_window_size = director._get_window_size_no_autoscale()
         window_scale_x = current_window_size[0] / director.get_window_size()[0]
@@ -93,14 +96,18 @@ class GameBackgroundLayer(ColorLayer):
             director.window.close()
             director.init(caption="连连看",
                         width=setting.level_info[setting.level]["column"] * (setting.square_size + 2) + 30,
-                        height=(setting.level_info[setting.level]["row"]) * (setting.square_size + 2) + 60, resizable= True,)
+                        height=setting.level_info[setting.level]["row"] * (setting.square_size + 2) + 60, resizable=True)
             director.window.set_location(window_location[0], window_location[1])
             director.run(new_scene)
         except IndexError:
+            self.disable_input()
             win_layer = WinLayer(setting)
             current_scene = self.get_ancestor(Scene)
             setting.level = 0
             current_scene.add(win_layer, z=2)
+
+    def disable_input(self):
+        self.stop_status = True
 
 
 class Board:

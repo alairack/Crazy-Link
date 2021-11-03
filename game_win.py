@@ -39,7 +39,7 @@ class WinLayer(Layer):
             director.window.close()
             director.init(caption="连连看",
                           width=self.setting.level_info[self.setting.level]["column"] * (self.setting.square_size + 2) + 30,
-                          height=(self.setting.level_info[self.setting.level]["row"] + 2) * (self.setting.square_size + 2) + 60,
+                          height=self.setting.level_info[self.setting.level]["row"] * (self.setting.square_size + 2) + 60,
                           resizable=True)
             director.window.set_location(window_location[0], window_location[1])
             director.run(self.setting.menu_scene)
