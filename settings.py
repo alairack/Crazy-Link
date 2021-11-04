@@ -23,6 +23,7 @@ class Settings:
         self.un_click_sound = pyglet.resource.media("res/unclick.wav", streaming=False)
         self.remove_sound = pyglet.resource.media("res/remove_block.wav", streaming=False)
         self.logo = pyglet.resource.image("res/logo.ico")
+        self.reset_button_image = pyglet.resource.image("res/reset.png")
         self.fruit_images = []
         self.menu_scene = None
         for x in self.fruits:

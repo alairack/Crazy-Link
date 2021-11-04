@@ -4,12 +4,14 @@ from cocos.layer import ColorLayer
 from cocos.batch import BatchNode
 from game_win import WinLayer
 import random
+import copy
 from settings import Settings
 import math
 from cocos.director import director
 from cocos.actions import *
 from judge import *
 from HUD import HUDLayer
+
 
 setting = Settings()
 
@@ -18,7 +20,7 @@ def create_game_scene():
     scene = Scene()
     scene.position = 15, 15
     scene.add(GameBackgroundLayer(), z=1, name="game_layer")
-    scene.add(HUDLayer(setting), z=2)
+    scene.add(HUDLayer(setting, scene), z=2)
     return scene
 
 
@@ -30,13 +32,15 @@ class GameBackgroundLayer(ColorLayer):
         self.selected_block = []
 
         self.board = Board()
-        self.batch = cocos.batch.BatchNode()
-        self.batch.position = setting.square_size/2, setting.square_size/2         # 因为sprite 的position为中心点
-        self.add(self.batch)
-
+        self.init_batch()
         self.board.draw(self.position, self.batch)
         self.click_anime = []
         self.stop_status = False
+
+    def init_batch(self):
+        self.batch = cocos.batch.BatchNode()
+        self.batch.position = setting.square_size/2, setting.square_size/2         # 因为sprite 的position为中心点
+        self.add(self.batch)
 
     def draw(self):
         super().draw()
@@ -51,7 +55,7 @@ class GameBackgroundLayer(ColorLayer):
         current_window_size = director._get_window_size_no_autoscale()
         window_scale_x = current_window_size[0] / director.get_window_size()[0]
         window_scale_y = current_window_size[1] / director.get_window_size()[1]
-        sprite_x = math.floor((x - self.position[0] - scene.position[0])/(setting.square_size + 2) / window_scale_x)     # 取整
+        sprite_x = math.floor((x - self.position[0] - scene.position[0])/(setting.square_size + 2) / window_scale_x)   # 取整
         sprite_y = math.floor((y - self.position[1] - scene.position[1])/(setting.square_size + 2) / window_scale_y)
         try:
             click_sprite = self.batch.get(f"{sprite_y, sprite_x}")
@@ -76,6 +80,8 @@ class GameBackgroundLayer(ColorLayer):
                             self.board.array[self.selected_block[0][2]][self.selected_block[0][1]] = 0
                             self.selected_block.pop(0)
                             self.click_anime.pop(0)
+                            if not self.board.is_block_exist():
+                                self.next_level()
                         else:
                             click_sprite.click(self.click_anime)
                             self.selected_block.append([click_sprite, sprite_x, sprite_y])
@@ -102,6 +108,38 @@ class GameBackgroundLayer(ColorLayer):
 
     def disable_input(self):
         self.stop_status = True
+
+    def reset(self):
+
+        def swap_value():
+            random_value = random.randint(0, len(exist_block) - 1)
+            random_block = copy.deepcopy([exist_block[random_value][0], exist_block[random_value][1]])
+            exist_block.pop(random_value)
+            random_block_value = copy.deepcopy(self.board.array[random_block[0]][random_block[1]])
+
+            random_value_2 = random.randint(0, len(exist_block) - 1)
+            random_block_2 = copy.deepcopy([exist_block[random_value_2][0], exist_block[random_value_2][1]])
+            exist_block.pop(random_value_2)
+            random_block_value_2 = copy.deepcopy(self.board.array[random_block_2[0]][random_block_2[1]])
+
+            self.board.array[random_block[0]][random_block[1]] = random_block_value_2
+            self.board.array[random_block_2[0]][random_block_2[1]] = random_block_value    # 交换值(水果)
+
+        exist_block = []
+        k = 0
+        i = 0
+        while k < self.board.row:
+            if self.board.array[k][i] != 0:
+                exist_block.append([k, i])
+            i = i + 1
+            if i == self.board.column:
+                i = 0
+                k = k + 1
+        while len(exist_block) > 0:
+            swap_value()
+        self.remove(self.batch)
+        self.init_batch()
+        self.board.draw(self.position, self.batch)
 
 
 class Board:
