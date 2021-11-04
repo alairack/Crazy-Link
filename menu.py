@@ -43,7 +43,7 @@ class MainMenu(Menu):
 class BackgroundLayer(Layer):
     def __init__(self):
         super().__init__()
-        self.background_image = pyglet.resource.image("menu.jpeg")
+        self.background_image = pyglet.resource.image("res/menu.jpeg")
 
     def draw(self):
         glPushMatrix()
