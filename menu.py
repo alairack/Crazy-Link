@@ -11,7 +11,7 @@ from settings import Logs
 
 class MainMenu(Menu):
     def __init__(self):
-        super().__init__('帝岚连连看')
+        super().__init__('Watch Link')
 
         self.font_title['font_size'] = 58
         self.font_title['color'] = (65, 105, 225, 255)
