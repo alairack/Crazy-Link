@@ -145,8 +145,3 @@ def judge_remove(sprite1_position, sprite2_position, array):
             return False
     else:
         return False
-
-
-
-
-

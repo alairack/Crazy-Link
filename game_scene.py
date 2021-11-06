@@ -226,4 +226,3 @@ class Block(cocos.sprite.Sprite):
         setting.un_click_sound.play()
         selected_sprite.do(ScaleTo(1, 0.09))
         self.do(ScaleTo(1, 0.09))
-

@@ -12,5 +12,3 @@ if __name__ == "__main__":
     director.window.set_icon(setting.logo)
     menu_scene = create_menu()
     director.run(menu_scene)
-
-

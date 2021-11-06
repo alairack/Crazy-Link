@@ -57,5 +57,3 @@ def create_menu():
     menu_scene.add(MainMenu(), z=1)
     menu_scene.add(BackgroundLayer(), z=0)
     return menu_scene
-
-
