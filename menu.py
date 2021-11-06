@@ -11,7 +11,7 @@ from settings import Logs
 
 class MainMenu(Menu):
     def __init__(self):
-        super().__init__('Watch Link')
+        super().__init__('Crazy Link')
 
         self.font_title['font_size'] = 58
         self.font_title['color'] = (65, 105, 225, 255)
@@ -57,7 +57,5 @@ def create_menu():
     menu_scene.add(MainMenu(), z=1)
     menu_scene.add(BackgroundLayer(), z=0)
     return menu_scene
-
-
 
 

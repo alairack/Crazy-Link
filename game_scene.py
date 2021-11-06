@@ -55,8 +55,8 @@ class GameBackgroundLayer(ColorLayer):
         current_window_size = director._get_window_size_no_autoscale()
         window_scale_x = current_window_size[0] / director.get_window_size()[0]
         window_scale_y = current_window_size[1] / director.get_window_size()[1]
-        sprite_x = math.floor((x - self.position[0] - scene.position[0])/(setting.square_size + 2) / window_scale_x)   # 取整
-        sprite_y = math.floor((y - self.position[1] - scene.position[1])/(setting.square_size + 2) / window_scale_y)
+        sprite_x = math.floor((x / window_scale_x - self.position[0] - scene.position[0])/(setting.square_size + 2))   # 取整
+        sprite_y = math.floor((y / window_scale_y - self.position[1] - scene.position[1])/(setting.square_size + 2))
         try:
             click_sprite = self.batch.get(f"{sprite_y, sprite_x}")
         except Exception:

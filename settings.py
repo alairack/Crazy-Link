@@ -33,7 +33,7 @@ class Settings:
     def create_new_window(self, scene):
         window_location = director.window.get_location()
         director.window.close()
-        director.init(caption="连连看",
+        director.init(caption="Crazy Link",
                       width=self.level_info[self.level]["column"] * (self.square_size + 2) + 30,
                       height=self.level_info[self.level]["row"] * (self.square_size + 2) + 60,
                       resizable=True)
