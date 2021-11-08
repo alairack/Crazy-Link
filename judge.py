@@ -77,7 +77,7 @@ def one_turn(sprite1_position, sprite2_position, array):
 
 def two_turn(sprite1_position, sprite2_position, array):
     i = 1
-    array.insert(0, [0 for x in range(15)])
+    array.insert(0, [0 for x in range(len(array[0]))])
     try:
         while array[sprite1_position[0] - i + 1][sprite1_position[1]] == 0 and sprite1_position[0] - i + 1 > -1:
             if one_turn([sprite1_position[0] - i + 1, sprite1_position[1]], [sprite2_position[0] + 1, sprite2_position[1]], array):
@@ -89,16 +89,16 @@ def two_turn(sprite1_position, sprite2_position, array):
     array.pop(0)
 
     i = 1
-    array.append([0 for x in range(15)])
+    array.append([0 for x in range(len(array[0]))])                         # 通过检测array 的长度来确定行和列的长度
     try:
-        while array[sprite1_position[0] + i][sprite1_position[1]] == 0 and sprite1_position[0] + i < 11:
+        while array[sprite1_position[0] + i][sprite1_position[1]] == 0 and sprite1_position[0] + i < len(array):
             if one_turn([sprite1_position[0] + i, sprite1_position[1]], sprite2_position, array):
-                array.pop(10)
+                array.pop()
                 return True
             i = i + 1
     except IndexError:
         pass
-    array.pop(10)
+    array.pop()
 
     i = 1
     for x in array:
@@ -119,16 +119,16 @@ def two_turn(sprite1_position, sprite2_position, array):
     for x in array:
         x.append(0)
     try:
-        while array[sprite1_position[0]][sprite1_position[1] + i] == 0 and sprite1_position[1] + i < 16:
+        while array[sprite1_position[0]][sprite1_position[1] + i] == 0 and sprite1_position[1] + i < len(array[0]):
             if one_turn([sprite1_position[0], sprite1_position[1] + i], sprite2_position, array):
                 for y in array:
-                    y.pop(15)
+                    y.pop()
                 return True
             i = i + 1
     except IndexError:
         pass
     for y in array:
-        y.pop(15)
+        y.pop()
     return False
 
 
