@@ -15,9 +15,9 @@ class Settings:
                            {"level": 7, "time": 360, "row": 16, "column": 20},
                            {"level": 8, "time": 380, "row": 17, "column": 21},
                            {"level": 9, "time": 410, "row": 18, "column": 22}]
-        self.fruits = ["ananas", 'apple', 'banana', 'cherry', 'durian', 'grape', 'lemon', 'mangosteen', 'origin',
-                       'pear', 'strawberry', 'watermelon']
-        self.square_size = 32      # 贴图大小
+        self.fruits = ["ananas", 'apple', 'banana', 'cherry', 'durian', 'grape', 'lemon', 'mangosteen', 'orange',
+                       'pear', 'strawberry', 'watermelon', 'bird']
+        self.square_size = 35      # 贴图大小
         self.click_anime = pyglet.resource.animation("res/click2.gif")
         self.click_sound = pyglet.resource.media("res/click.wav", streaming=False)
         self.un_click_sound = pyglet.resource.media("res/unclick.wav", streaming=False)
@@ -27,7 +27,7 @@ class Settings:
         self.fruit_images = []
         self.menu_scene = None
         for x in self.fruits:
-            image = pyglet.resource.image(f"res/fruit/{x}.png")
+            image = pyglet.resource.image(f"res/new_fruit/{x}.png")
             self.fruit_images.append(image)
 
     def create_new_window(self, scene):
