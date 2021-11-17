@@ -1,5 +1,4 @@
 import pyglet.resource
-from pyglet import font
 import os
 from cocos.director import director
 
@@ -45,7 +44,9 @@ class Settings:
         director.run(scene)
 
     def load_fonts(self):
-        font.add_directory('res/fonts')
+        pyglet.resource.path = ['res/fonts', '.']
+        pyglet.resource.reindex()
+        pyglet.resource.add_font('GenJyuuGothic-Normal-2.ttf')
 
 
 class Logs(object):
