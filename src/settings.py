@@ -1,4 +1,5 @@
 import pyglet.resource
+from pyglet import font
 import os
 from cocos.director import director
 
@@ -24,6 +25,8 @@ class Settings:
         self.remove_sound = pyglet.resource.media("res/remove_block.wav", streaming=False)
         self.logo = pyglet.resource.image("res/logo.ico")
         self.reset_button_image = pyglet.resource.image("res/reset.png")
+        self.progress_bar_image = pyglet.resource.animation('res/progress.gif')
+        self.load_fonts()
         self.fruit_images = []
         self.menu_scene = None
         for x in self.fruits:
@@ -40,6 +43,9 @@ class Settings:
         director.window.set_location(window_location[0], window_location[1])
         director.window.set_icon(self.logo)
         director.run(scene)
+
+    def load_fonts(self):
+        font.add_directory('res/fonts')
 
 
 class Logs(object):
