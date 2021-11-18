@@ -25,6 +25,8 @@ class Settings:
         self.logo = pyglet.resource.image("res/logo.ico")
         self.reset_button_image = pyglet.resource.image("res/reset.png")
         self.progress_bar_image = pyglet.resource.animation('res/progress.gif')
+        self.pause_button_image = pyglet.resource.image("res/pause_button.png")
+        self.resume_button_image = pyglet.resource.image("res/resume_button.png")
         self.load_fonts()
         self.fruit_images = []
         self.menu_scene = None
@@ -37,7 +39,7 @@ class Settings:
         director.window.close()
         director.init(caption="Crazy Link",
                       width=self.level_info[self.level]["column"] * (self.square_size + 2) + 30,
-                      height=self.level_info[self.level]["row"] * (self.square_size + 2) + 60,
+                      height=self.level_info[self.level]["row"] * (self.square_size + 2) + 65,
                       resizable=True)
         director.window.set_location(window_location[0], window_location[1])
         director.window.set_icon(self.logo)
