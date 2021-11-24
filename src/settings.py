@@ -46,9 +46,11 @@ class Settings:
         director.run(scene)
 
     def load_fonts(self):
-        pyglet.resource.path = ['res/fonts', '.']
+        pyglet.resource.path.append('res/fonts')
         pyglet.resource.reindex()
         pyglet.resource.add_font('GenJyuuGothic-Normal-2.ttf')
+        pyglet.resource.add_font('pcsenior.ttf')
+        pyglet.resource.add_font("Cyberpunk-Regular.ttf")
 
 
 class Logs(object):
