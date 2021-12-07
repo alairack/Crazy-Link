@@ -21,11 +21,11 @@ class GameOverLayer(Layer):
 
     def create_text(self, msg, size, x, y):
         text = Label(msg,
-                     font_name = "Kristen ITC",
-                     font_size = size,
-                     color = (0, 0, 255, 255),
-                     anchor_x = "center",
-                     anchor_y = "bottom")
+                     font_name="Kristen ITC",
+                     font_size=size,
+                     color=(0, 0, 255, 255),
+                     anchor_x="center",
+                     anchor_y="bottom")
 
         text.position = (x, y)
         self.add(text)

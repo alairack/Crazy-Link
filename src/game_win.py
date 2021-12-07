@@ -23,11 +23,11 @@ class WinLayer(Layer):
 
     def create_text(self, msg, size, x, y):
         text = Label(msg,
-                     font_name = "Kristen ITC",
-                     font_size = size,
-                     color = (255, 64, 64, 255),
-                     anchor_x = "center",
-                     anchor_y = "center")
+                     font_name="Kristen ITC",
+                     font_size=size,
+                     color=(255, 64, 64, 255),
+                     anchor_x="center",
+                     anchor_y="center")
 
         text.position = (x, y)
         self.add(text)

@@ -64,3 +64,6 @@ class Logs(object):
             os.mkdir(os.getcwd() + r"\logs")
         log_file = open(f"{log_path}/game_logs.txt", "a")
         self.log_file = log_file
+
+
+setting = Settings()
