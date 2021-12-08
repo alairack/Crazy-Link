@@ -5,15 +5,12 @@ from cocos.batch import BatchNode
 from game_win import WinLayer
 import random
 import copy
-from settings import Settings
 import math
 from cocos.director import director
 from cocos.actions import *
 from judge import *
 from HUD import HUDLayer
-
-
-setting = Settings()
+from settings import setting
 
 
 def create_game_scene():
@@ -63,8 +60,16 @@ class GameBackgroundLayer(ColorLayer):
             pass
         else:
             if self.board.array[sprite_y][sprite_x] != 0:
+<<<<<<< HEAD
                 if self.is_same_clicked_block(sprite_x, sprite_y):
                     return  # 如果选取的方块和上一次选取的方块相同，则略过
+=======
+                if len(self.selected_block) >= 4:
+                    return
+                if len(self.selected_block) > 0:
+                    if sprite_x == self.selected_block[-1][1] and sprite_y == self.selected_block[-1][2]:
+                        return  # 如果选取的方块和上一次选取的方块相同，则略过
+>>>>>>> 0609fe75aa04400e06911ed73f8c376e6ceb3d77
                 if len(self.selected_block) % 2 == 0:
                         click_sprite.click(self.click_anime)
                         self.selected_block.append([click_sprite, sprite_x, sprite_y])
@@ -72,6 +77,7 @@ class GameBackgroundLayer(ColorLayer):
                     if judge_remove([self.selected_block[0][2], self.selected_block[0][1]], [sprite_y, sprite_x],
                                     self.board.array):
                         click_sprite.un_click(self.selected_block[0][0], self.click_anime[0])
+<<<<<<< HEAD
                         setting.remove_sound.play()
                         self.batch.remove(self.selected_block[0][0])
                         self.batch.remove(click_sprite)
@@ -79,6 +85,15 @@ class GameBackgroundLayer(ColorLayer):
                         self.board.array[self.selected_block[0][2]][self.selected_block[0][1]] = 0
                         self.selected_block.pop(0)
                         self.click_anime.pop(0)
+=======
+                        self.board.array[sprite_y][sprite_x] = 0
+                        self.board.array[self.selected_block[0][2]][self.selected_block[0][1]] = 0
+                        self.batch.remove(self.selected_block[0][0])
+                        self.batch.remove(click_sprite)
+                        self.selected_block.pop(0)
+                        self.click_anime.pop(0)
+                        setting.remove_sound.play()
+>>>>>>> 0609fe75aa04400e06911ed73f8c376e6ceb3d77
                         if not self.board.is_block_exist():
                             self.next_level()
                     else:
@@ -224,11 +239,11 @@ class Block(cocos.sprite.Sprite):
         y = self._get_y()
         self.do(ScaleTo(0.85, 0.09))
         batch = self.get_ancestor(BatchNode)
-        setting.click_sound.play()
         sprite = cocos.sprite.Sprite(setting.click_anime)
         sprite.position = x, y
         batch.add(sprite, z=2)
         anime_list.append(sprite)
+        setting.click_sound.play()
 
     def un_click(self, selected_sprite, click_anime):
         batch = self.get_ancestor(BatchNode)

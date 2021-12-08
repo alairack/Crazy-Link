@@ -137,4 +137,3 @@ class HUDLayer(Layer):
                     if y < (button.y + button.height / 2 + self.scene_position[1] + self.position[1]) * window_scale_y:
                         return True
         return False
-

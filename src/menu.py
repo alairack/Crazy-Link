@@ -6,8 +6,8 @@ from cocos.text import Label
 from cocos.actions import *
 from pyglet.app import exit
 from cocos.layer import ColorLayer, Layer
-from game_scene import create_game_scene, setting
-from settings import Logs
+from game_scene import create_game_scene
+from settings import Logs, setting
 from pyglet import resource
 
 
