@@ -6,15 +6,15 @@ from cocos.director import director
 class Settings:
     def __init__(self):
         self.level = 0
-        self.level_info = [{"level": 1, "time": 160, "row": 10, "column": 15},
-                           {"level": 2, "time": 200, "row": 11, "column": 16},
-                           {"level": 3, "time": 240, "row": 12, "column": 17},
-                           {"level": 4, "time": 280, "row": 13, "column": 18},
-                           {"level": 5, "time": 300, "row": 14, "column": 19},
-                           {"level": 6, "time": 340, "row": 15, "column": 20},
-                           {"level": 7, "time": 360, "row": 16, "column": 20},
-                           {"level": 8, "time": 380, "row": 17, "column": 21},
-                           {"level": 9, "time": 410, "row": 18, "column": 22}]
+        self.level_info = [{"level": 1, "time": 250, "row": 10, "column": 15},
+                           {"level": 2, "time": 310, "row": 11, "column": 16},
+                           {"level": 3, "time": 370, "row": 12, "column": 17},
+                           {"level": 4, "time": 430, "row": 13, "column": 18},
+                           {"level": 5, "time": 490, "row": 14, "column": 19},
+                           {"level": 6, "time": 550, "row": 15, "column": 20},
+                           {"level": 7, "time": 610, "row": 16, "column": 20},
+                           {"level": 8, "time": 670, "row": 17, "column": 21},
+                           {"level": 9, "time": 730, "row": 18, "column": 22}]
         self.fruits = ["ananas", 'apple', 'banana', 'cherry', 'durian', 'grape', 'lemon', 'mangosteen', 'orange',
                        'pear', 'strawberry', 'watermelon', 'bird']
         self.square_size = 35      # 贴图大小
@@ -48,6 +48,7 @@ class Settings:
     def load_fonts(self):
         pyglet.resource.path.append('res/fonts')
         pyglet.resource.reindex()
+        pyglet.resource.add_font('Lato-Regular.ttf')
         pyglet.resource.add_font('GenJyuuGothic-Normal-2.ttf')
         pyglet.resource.add_font('pcsenior.ttf')
         pyglet.resource.add_font("Cyberpunk-Regular.ttf")
@@ -61,8 +62,11 @@ class Logs(object):
     def open_log_file(self):
         log_path = "./logs"
         if not os.path.exists(log_path):
-            os.mkdir(os.getcwd() + r"\logs")
-        log_file = open(f"{log_path}/game_logs.txt", "a")
+            os.mkdir(os.getcwd() + r"/logs")
+        try:
+            log_file = open(f"{log_path}/game_logs.txt", "a")
+        except FileNotFoundError:
+            log_file = open(f"{log_path}/game_logs.txt", 'w')
         self.log_file = log_file
 
 

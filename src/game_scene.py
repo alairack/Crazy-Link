@@ -49,27 +49,17 @@ class GameBackgroundLayer(ColorLayer):
         if self.stop_status:
             return
         scene = self.get_ancestor(Scene)
-        current_window_size = director._get_window_size_no_autoscale()
-        window_scale_x = current_window_size[0] / director.get_window_size()[0]
-        window_scale_y = current_window_size[1] / director.get_window_size()[1]
-        sprite_x = math.floor((x / window_scale_x - self.position[0] - scene.position[0])/(setting.square_size + 2))   # 取整
-        sprite_y = math.floor((y / window_scale_y - self.position[1] - scene.position[1])/(setting.square_size + 2))
+        virtual_coord = director.get_virtual_coordinates_autoscale(x, y)  # 将真实的点击坐标转换为虚拟的转换坐标
+        sprite_x = math.floor((virtual_coord[0] - self.position[0] - scene.position[0]) / (setting.square_size + 2))  # 取整
+        sprite_y = math.floor((virtual_coord[1] - self.position[1] - scene.position[1]) / (setting.square_size + 2))
         try:
             click_sprite = self.batch.get(f"{sprite_y, sprite_x}")
         except Exception:
             pass
         else:
             if self.board.array[sprite_y][sprite_x] != 0:
-<<<<<<< HEAD
                 if self.is_same_clicked_block(sprite_x, sprite_y):
                     return  # 如果选取的方块和上一次选取的方块相同，则略过
-=======
-                if len(self.selected_block) >= 4:
-                    return
-                if len(self.selected_block) > 0:
-                    if sprite_x == self.selected_block[-1][1] and sprite_y == self.selected_block[-1][2]:
-                        return  # 如果选取的方块和上一次选取的方块相同，则略过
->>>>>>> 0609fe75aa04400e06911ed73f8c376e6ceb3d77
                 if len(self.selected_block) % 2 == 0:
                         click_sprite.click(self.click_anime)
                         self.selected_block.append([click_sprite, sprite_x, sprite_y])
@@ -77,15 +67,6 @@ class GameBackgroundLayer(ColorLayer):
                     if judge_remove([self.selected_block[0][2], self.selected_block[0][1]], [sprite_y, sprite_x],
                                     self.board.array):
                         click_sprite.un_click(self.selected_block[0][0], self.click_anime[0])
-<<<<<<< HEAD
-                        setting.remove_sound.play()
-                        self.batch.remove(self.selected_block[0][0])
-                        self.batch.remove(click_sprite)
-                        self.board.array[sprite_y][sprite_x] = 0
-                        self.board.array[self.selected_block[0][2]][self.selected_block[0][1]] = 0
-                        self.selected_block.pop(0)
-                        self.click_anime.pop(0)
-=======
                         self.board.array[sprite_y][sprite_x] = 0
                         self.board.array[self.selected_block[0][2]][self.selected_block[0][1]] = 0
                         self.batch.remove(self.selected_block[0][0])
@@ -93,7 +74,6 @@ class GameBackgroundLayer(ColorLayer):
                         self.selected_block.pop(0)
                         self.click_anime.pop(0)
                         setting.remove_sound.play()
->>>>>>> 0609fe75aa04400e06911ed73f8c376e6ceb3d77
                         if not self.board.is_block_exist():
                             self.next_level()
                     else:
@@ -163,8 +143,6 @@ class GameBackgroundLayer(ColorLayer):
         self.remove(self.batch)
         self.init_batch()
         self.board.draw(self.position, self.batch)
-
-
 
 
 class Board:

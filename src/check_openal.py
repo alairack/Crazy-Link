@@ -95,9 +95,6 @@ class WesnothDialog(glooey.YesNoDialog):
 
 def run_install_window():
     window = pyglet.window.Window(width=600, height=500)
-    pyglet.resource.path.append('res/fonts')
-    pyglet.resource.reindex()
-    pyglet.resource.add_font('Lato-Regular.ttf')
     form = TextForm(text="sudo apt install libopenal1")
     gui = glooey.Gui(window)
     dialog = WesnothDialog()
