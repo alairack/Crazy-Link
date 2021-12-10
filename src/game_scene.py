@@ -39,9 +39,6 @@ class GameBackgroundLayer(ColorLayer):
         self.batch.position = setting.square_size/2, setting.square_size/2         # 因为sprite 的position为中心点
         self.add(self.batch)
 
-    def draw(self):
-        super().draw()
-
     def on_mouse_press(self, x, y, dx, dy):
         """
         点击后事件，如遇点击与图标位置错位，同时图标绘制位置正常，极大概率是该处的 sprite_x , sprite_y 在计算时的问题。   2021.11.3
@@ -49,7 +46,7 @@ class GameBackgroundLayer(ColorLayer):
         if self.stop_status:
             return
         scene = self.get_ancestor(Scene)
-        virtual_coord = director.get_virtual_coordinates_autoscale(x, y)  # 将真实的点击坐标转换为虚拟的转换坐标
+        virtual_coord = director.get_virtual_coordinates(x, y)  # 将真实的点击坐标转换为虚拟的转换坐标
         sprite_x = math.floor((virtual_coord[0] - self.position[0] - scene.position[0]) / (setting.square_size + 2))  # 取整
         sprite_y = math.floor((virtual_coord[1] - self.position[1] - scene.position[1]) / (setting.square_size + 2))
         try:
@@ -61,8 +58,8 @@ class GameBackgroundLayer(ColorLayer):
                 if self.is_same_clicked_block(sprite_x, sprite_y):
                     return  # 如果选取的方块和上一次选取的方块相同，则略过
                 if len(self.selected_block) % 2 == 0:
-                        click_sprite.click(self.click_anime)
-                        self.selected_block.append([click_sprite, sprite_x, sprite_y])
+                    click_sprite.click(self.click_anime)
+                    self.selected_block.append([click_sprite, sprite_x, sprite_y])
                 else:
                     if judge_remove([self.selected_block[0][2], self.selected_block[0][1]], [sprite_y, sprite_x],
                                     self.board.array):

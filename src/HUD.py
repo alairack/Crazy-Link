@@ -93,12 +93,14 @@ class HUDLayer(Layer):
         self.game_layer.visible = False
         self.pause_button.image = self.setting.resume_button_image
         self.is_run = False
+        self.game_layer.stop_status = True
 
     def press_resume_button(self):
         self.count_time()
         self.game_layer.visible = True
         self.pause_button.image = self.setting.pause_button_image
         self.is_run = True
+        self.game_layer.stop_status = False
 
     def on_mouse_press(self, x, y, dx, dy):
         if self.is_in_button_area(x, y, self.reset_button):
@@ -128,12 +130,10 @@ class HUDLayer(Layer):
         :button需要判断的按钮
         :return 返回判断结果
         """
-        current_window_size = director._get_window_size_no_autoscale()
-        window_scale_x = current_window_size[0] / director.get_window_size()[0]
-        window_scale_y = current_window_size[1] / director.get_window_size()[1]
-        if x > (button.x - button.width / 2 + self.scene_position[0]) * window_scale_x:
-            if x < (button.x + button.width / 2 + self.scene_position[0]) * window_scale_x:
-                if y > (button.y - button.height / 2 + self.scene_position[1] + self.position[1]) * window_scale_y:
-                    if y < (button.y + button.height / 2 + self.scene_position[1] + self.position[1]) * window_scale_y:
+        x, y = director.get_virtual_coordinates(x, y)
+        if x > (button.x - button.width / 2 + self.scene_position[0]):
+            if x < (button.x + button.width / 2 + self.scene_position[0]):
+                if y > (button.y - button.height / 2 + self.scene_position[1] + self.position[1]):
+                    if y < (button.y + button.height / 2 + self.scene_position[1] + self.position[1]):
                         return True
         return False
