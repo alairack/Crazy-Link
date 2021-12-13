@@ -7,8 +7,8 @@
 - 贴图与音效精美新颖
 - 关卡多样化，保证可玩性与挑战性
 - 体积轻便，占用空间小
-- ![游戏截图](https://i.loli.net/2021/11/09/2Q169FkY5zErZIT.png)
-- ![游戏截图](https://i.loli.net/2021/11/09/QuPJCaRd4esTk6m.png)
+- ![游戏截图](https://s2.loli.net/2021/12/13/QfmWDaPh7zjqFrY.png)
+- ![游戏截图](https://s2.loli.net/2021/12/13/wKRH7oPn8C46rNy.png)
 
 ## 玩法
 在规定时间内将相同的两张牌用三根以内的直线连在一起就可以消除，消除所有牌则获胜。
