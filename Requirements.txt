@@ -1,0 +1,7 @@
+Software:
+  python 3.6+ 
+  cocos2d==0.6.8
+  pyglet==1.4.11
+  glooey 0.3.6+
+  openal (on Linux)
+  Linux, Windows or Mac OS/X
