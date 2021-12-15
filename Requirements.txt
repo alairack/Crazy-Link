@@ -4,4 +4,4 @@ Software:
   pyglet==1.4.11
   glooey 0.3.6+
   openal (on Linux)
-  Linux, Windows or Mac OS/X
+  Linux, Windows 7 sp1+, Windows 10
