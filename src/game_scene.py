@@ -29,6 +29,7 @@ class GameBackgroundLayer(ColorLayer):
         self.selected_block = []
 
         self.board = Board()
+        self.batch = None
         self.init_batch()
         self.board.draw(self.position, self.batch)
         self.click_anime = []
@@ -111,35 +112,52 @@ class GameBackgroundLayer(ColorLayer):
 
     def reset(self):
 
-        def swap_value():
-            random_value = random.randint(0, len(exist_block) - 1)
-            random_block = copy.deepcopy([exist_block[random_value][0], exist_block[random_value][1]])
-            exist_block.pop(random_value)
-            random_block_value = copy.deepcopy(self.board.array[random_block[0]][random_block[1]])
+        def whether_execute_reset(dt):
+            """
+            如果已选择的方块超过1个，则等待消除，如果已选择的方块为1个，先取消此方块再重置。避免github issues #4
+            :return:None
+            """
+            if len(self.selected_block) > 1:
+                pass
+            else:
+                self.unschedule(whether_execute_reset)
+                if len(self.selected_block) == 1:
+                    self.un_click_block(self.selected_block[0][0])
+                run_reset()
 
-            random_value_2 = random.randint(0, len(exist_block) - 1)
-            random_block_2 = copy.deepcopy([exist_block[random_value_2][0], exist_block[random_value_2][1]])
-            exist_block.pop(random_value_2)
-            random_block_value_2 = copy.deepcopy(self.board.array[random_block_2[0]][random_block_2[1]])
+        def run_reset():
 
-            self.board.array[random_block[0]][random_block[1]] = random_block_value_2
-            self.board.array[random_block_2[0]][random_block_2[1]] = random_block_value    # 交换值(水果)
+            def swap_value():
+                random_value = random.randint(0, len(exist_block) - 1)
+                random_block = copy.deepcopy([exist_block[random_value][0], exist_block[random_value][1]])
+                exist_block.pop(random_value)
+                random_block_value = copy.deepcopy(self.board.array[random_block[0]][random_block[1]])
 
-        exist_block = []
-        k = 0
-        i = 0
-        while k < self.board.row:
-            if self.board.array[k][i] != 0:
-                exist_block.append([k, i])
-            i = i + 1
-            if i == self.board.column:
-                i = 0
-                k = k + 1
-        while len(exist_block) > 0:
-            swap_value()
-        self.remove(self.batch)
-        self.init_batch()
-        self.board.draw(self.position, self.batch)
+                random_value_2 = random.randint(0, len(exist_block) - 1)
+                random_block_2 = copy.deepcopy([exist_block[random_value_2][0], exist_block[random_value_2][1]])
+                exist_block.pop(random_value_2)
+                random_block_value_2 = copy.deepcopy(self.board.array[random_block_2[0]][random_block_2[1]])
+
+                self.board.array[random_block[0]][random_block[1]] = random_block_value_2
+                self.board.array[random_block_2[0]][random_block_2[1]] = random_block_value  # 交换值(水果)
+
+            exist_block = []
+            k = 0
+            i = 0
+            while k < self.board.row:
+                if self.board.array[k][i] != 0:
+                    exist_block.append([k, i])
+                i = i + 1
+                if i == self.board.column:
+                    i = 0
+                    k = k + 1
+            while len(exist_block) > 0:
+                swap_value()
+            self.remove(self.batch)
+            self.init_batch()
+            self.board.draw(self.position, self.batch)
+
+        self.schedule_interval(whether_execute_reset, 1/20)              # 设为20，消耗性能少一些
 
 
 class Board:

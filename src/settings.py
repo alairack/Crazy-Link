@@ -61,12 +61,13 @@ class Logs(object):
 
     def open_log_file(self):
         log_path = "./logs"
+        log_file_path = os.path.join(log_path, "game_logs.txt")
         if not os.path.exists(log_path):
-            os.mkdir(os.getcwd() + r"/logs")
+            os.mkdir(os.path.join(os.getcwd(), "logs"))
         try:
-            log_file = open(f"{log_path}/game_logs.txt", "a")
+            log_file = open(log_file_path, "a")
         except FileNotFoundError:
-            log_file = open(f"{log_path}/game_logs.txt", 'w')
+            log_file = open(log_file_path, 'w')
         self.log_file = log_file
 
 
