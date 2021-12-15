@@ -7,7 +7,7 @@ from cocos.actions import *
 from pyglet.app import exit
 from cocos.layer import ColorLayer, Layer
 from game_scene import create_game_scene
-from settings import Logs, setting
+from settings import log, setting
 from pyglet import resource
 
 
@@ -50,7 +50,8 @@ class MainMenu(Menu):
         cocos.director.director.replace(game_scene)
 
     def on_quit(self):
-        Logs().log_file.close()
+        log.log_file.write(f"{log.get_current_time()}    game is shut down")
+        log.log_file.close()
         exit()
 
 
