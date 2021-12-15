@@ -3,6 +3,7 @@ from cocos.text import Label
 from game_over import GameOverLayer
 from cocos.sprite import Sprite
 from cocos.director import director
+from settings import log
 
 
 class HUDLayer(Layer):
@@ -75,6 +76,7 @@ class HUDLayer(Layer):
             self.unschedule(update_time)
             self.unschedule(update_progress_bar)
             self.progress_bar.scale_x = 0           # 避免进度条残留显示在屏幕上
+            log.log_file.write(f"{log.get_current_time()}   game is over because time no time left\n")
 
         self.schedule_interval(update_time, 1)
         self.schedule_interval(update_progress_bar, 1)
@@ -94,6 +96,7 @@ class HUDLayer(Layer):
         self.pause_button.image = self.setting.resume_button_image
         self.is_run = False
         self.game_layer.stop_status = True
+        log.log_file.write(f"{log.get_current_time()}    game pauses\n")
 
     def press_resume_button(self):
         self.count_time()
@@ -101,6 +104,7 @@ class HUDLayer(Layer):
         self.pause_button.image = self.setting.pause_button_image
         self.is_run = True
         self.game_layer.stop_status = False
+        log.log_file.write(f"{log.get_current_time()}    game continues\n")
 
     def on_mouse_press(self, x, y, dx, dy):
         if self.is_in_button_area(x, y, self.reset_button):

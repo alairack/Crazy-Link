@@ -1,6 +1,7 @@
 import pyglet.resource
 import os
 from cocos.director import director
+import time
 
 
 class Settings:
@@ -70,5 +71,10 @@ class Logs(object):
             log_file = open(log_file_path, 'w')
         self.log_file = log_file
 
+    def get_current_time(self):
+        current_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+        return current_time
+
 
 setting = Settings()
+log = Logs()

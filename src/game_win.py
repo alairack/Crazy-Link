@@ -3,6 +3,7 @@ from cocos.layer import Layer
 from cocos.actions import Blink, Show, FadeIn, ScaleTo
 from cocos.text import Label
 from pyglet.window import key
+from settings import log
 
 
 class WinLayer(Layer):
@@ -12,6 +13,8 @@ class WinLayer(Layer):
         super().__init__()
         action = ScaleTo(2, 1.5) + Blink(10, 2) + Show()
         width, height = director.get_window_size()
+
+        log.log_file.write(f"{log.get_current_time()}   game is win")
 
         msg1 = self.create_text("恭喜！\n您通关了", 34, width // 2, height // 2)
         self.setting = setting

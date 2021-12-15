@@ -1,18 +1,19 @@
-import time
-from settings import Logs
+from settings import log
 
 
-def logs(file):
+def logs(log_file):
     def decorator(func):
         def wrapper(sprite1_position, sprite2_position, array):
-            file.write(
-                f"{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}  position :{sprite1_position}  {sprite2_position}\n")
-            return func(sprite1_position, sprite2_position, array)
+            results = func(sprite1_position, sprite2_position, array)
+            log_file.write(
+             f"{log.get_current_time()} "
+             f"   judge_block:{sprite1_position} {sprite2_position}"
+             f"      results: {results}\n")
+            return results
         return wrapper
     return decorator
 
 
-@ logs(Logs().log_file)
 def a_straight_line(sprite1_position, sprite2_position, array):
     if sprite1_position[0] == sprite2_position[0]:
         if sprite1_position[1] > sprite2_position[1]:
@@ -132,6 +133,7 @@ def two_turn(sprite1_position, sprite2_position, array):
     return False
 
 
+@ logs(log.log_file)
 def judge_remove(sprite1_position, sprite2_position, array):
 
     if array[sprite1_position[0]][sprite1_position[1]] == array[sprite2_position[0]][sprite2_position[1]]:  # 判断两个图标是否相等

@@ -10,7 +10,7 @@ from cocos.director import director
 from cocos.actions import *
 from judge import *
 from HUD import HUDLayer
-from settings import setting
+from settings import setting, log
 
 
 def create_game_scene():
@@ -158,12 +158,14 @@ class GameBackgroundLayer(ColorLayer):
             self.board.draw(self.position, self.batch)
 
         self.schedule_interval(whether_execute_reset, 1/20)              # 设为20，消耗性能少一些
+        log.log_file.write(f"{log.get_current_time()}    reset all block\n")
 
 
 class Board:
     def __init__(self):
         self.column = setting.level_info[setting.level]["column"]
         self.row = setting.level_info[setting.level]["row"]
+        log.log_file.write(f"board init:   column=={self.column}   row=={self.row}\n")
         self.array = [[0 for col in range(self.column)] for row in range(self.row)]
         self.sort_position = [[] for k in range(len(setting.fruits))]              # 分别存储每一类方块位置
         self.init_block()
