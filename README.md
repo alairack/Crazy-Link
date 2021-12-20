@@ -14,14 +14,25 @@
 在规定时间内将相同的两张牌用三根以内的直线连在一起就可以消除，消除所有牌则获胜。
 ## 下载与安装
 在 "releases" 中下载游戏本体可执行文件，直接运行即可.
-## 运行要求
-linux系统需要安装openal库。使用terminal执行 ***sudo apt install libopenal1***   安装此库 
+## Requirements
+Software:
+- python 3.6+ 
+- cocos2d==0.6.8
+- pyglet==1.4.11
+- glooey 0.3.6+
+- openal (on Linux)
+  - 安装 openal:  ***sudo apt install libopenal1***
+## 系统要求
+- Linux
+- Windows7 Service Pack 1  以上 
+- Windows10
+
 ## TO DO
-- 为log日志增加更实用的功能
+- ~~为log日志增加更实用的功能~~
 - 增加更多方块样式
+- 增加 “设置” 功能
 ## 作者的话
 这仍是该游戏的早期预览版，这意味着在以后的更新中会发生大的改变。
 ## 版权信息
-请不要在未经许可的情况下进行包括但不限于转发、出售等侵权行为。
 部分资源来源于网络，如涉及侵权，请尽快与我联系。
 
