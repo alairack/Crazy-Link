@@ -51,8 +51,6 @@ def init_log():
 
 
 
-
-
 logger = init_log()
 
 
@@ -73,7 +71,7 @@ if __name__ == "__main__":
             run_install_window()
         else:
             logger.info("openal exist")
-            run_game()
+            run()
     elif sys.platform == 'win32':
         logger.info("openal exist")
-        run_game()
+        run()
