@@ -185,7 +185,7 @@ class Board:
                 if fruit != 0:
                     sprite = Block(fruit)
                     sprite.position = j * setting.square_size + left + j*2, i * setting.square_size + bottom + i*2     # *2为空隙宽度
-                    batch.add(sprite, z=3, name=f"{i, j}")
+                    batch.add(sprite, z=2, name=f"{i, j}")
 
     def init_block(self):
         """
@@ -232,7 +232,7 @@ class Board:
 
 class Block(cocos.sprite.Sprite):
     def __init__(self, fruit):
-        super().__init__(setting.fruit_images[fruit-1], scale=1)
+        super().__init__(setting.fruit_images[fruit-1])
 
     def click(self, anime_list):
         x = self._get_x()
@@ -241,7 +241,7 @@ class Block(cocos.sprite.Sprite):
         batch = self.get_ancestor(BatchNode)
         sprite = cocos.sprite.Sprite(setting.click_anime)
         sprite.position = x, y
-        batch.add(sprite, z=2)
+        batch.add(sprite, z=0)          # 当z=2时，第一次选择会出现点击动画盖住方块的问题
         anime_list.append(sprite)
         setting.click_sound.play()
 
