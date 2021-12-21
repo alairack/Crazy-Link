@@ -8,17 +8,23 @@ import pyglet
 import logging
 
 
-def run_game():
-    director.init(caption="Crazy Link", style=pyglet.window.Window.WINDOW_STYLE_DEFAULT,
+def run():
+    def run_game():
+        director.init(caption="Crazy Link", style=pyglet.window.Window.WINDOW_STYLE_DEFAULT,
                   width=setting.level_info[setting.level]["column"] * (setting.square_size + 2) + 30,
                   height=setting.level_info[setting.level]["row"] * (setting.square_size + 2) + 65, resizable=True, vsync=True)
 
-    logger.info(f"game start on {sys.platform}")
-    logger.info(f"audio driver : {pyglet.media.get_audio_driver()}")  # 此代码理论上仅打印声音驱动名称，但可以使初次播放声音速度明显提升
+        logger.info(f"game start on {sys.platform}")
+        logger.info(f"audio driver : {pyglet.media.get_audio_driver()}")  # 此代码理论上仅打印声音驱动名称，但可以使初次播放声音速度明显提升
 
-    director.window.set_icon(setting.logo)
-    menu_scene = create_menu()
-    director.run(menu_scene)
+        director.window.set_icon(setting.logo)
+        menu_scene = create_menu()
+        director.run(menu_scene)
+
+    try:
+        run_game()
+    except Exception:
+        logger.error("game is failed", exc_info = True)
 
 
 def init_log():
