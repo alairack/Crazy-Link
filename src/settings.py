@@ -1,6 +1,9 @@
 import pyglet.resource
-import os
 from cocos.director import director
+import logging
+
+
+main_logger = logging.getLogger("main.setting")
 
 
 class Settings:
@@ -52,23 +55,6 @@ class Settings:
         pyglet.resource.add_font('GenJyuuGothic-Normal-2.ttf')
         pyglet.resource.add_font('pcsenior.ttf')
         pyglet.resource.add_font("Cyberpunk-Regular.ttf")
-
-
-class Logs(object):
-    def __init__(self):
-        self.log_file = None
-        self.open_log_file()
-
-    def open_log_file(self):
-        log_path = "./logs"
-        log_file_path = os.path.join(log_path, "game_logs.txt")
-        if not os.path.exists(log_path):
-            os.mkdir(os.path.join(os.getcwd(), "logs"))
-        try:
-            log_file = open(log_file_path, "a")
-        except FileNotFoundError:
-            log_file = open(log_file_path, 'w')
-        self.log_file = log_file
 
 
 setting = Settings()

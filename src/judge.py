@@ -1,18 +1,5 @@
-import time
-from settings import Logs
 
 
-def logs(file):
-    def decorator(func):
-        def wrapper(sprite1_position, sprite2_position, array):
-            file.write(
-                f"{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}  position :{sprite1_position}  {sprite2_position}\n")
-            return func(sprite1_position, sprite2_position, array)
-        return wrapper
-    return decorator
-
-
-@ logs(Logs().log_file)
 def a_straight_line(sprite1_position, sprite2_position, array):
     if sprite1_position[0] == sprite2_position[0]:
         if sprite1_position[1] > sprite2_position[1]:

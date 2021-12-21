@@ -3,6 +3,9 @@ from cocos.layer import Layer
 from cocos.actions import MoveTo, FadeIn
 from cocos.text import Label
 from pyglet.window import key
+import logging
+
+main_logger = logging.getLogger("main.setting")
 
 
 class GameOverLayer(Layer):
@@ -10,6 +13,9 @@ class GameOverLayer(Layer):
 
     def __init__(self, setting):
         super().__init__()
+
+        main_logger.info("game is over")
+
         width, height = director.get_window_size()
 
         msg1 = self.create_text("Game Over", 54, width // 2, height)

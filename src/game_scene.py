@@ -11,6 +11,10 @@ from cocos.actions import *
 from judge import *
 from HUD import HUDLayer
 from settings import setting
+import logging
+
+
+main_logger = logging.getLogger("main")
 
 
 def create_game_scene():
@@ -98,6 +102,9 @@ class GameBackgroundLayer(ColorLayer):
     def next_level(self):
         try:
             setting.level = setting.level + 1
+
+            main_logger.info(f"go into next level:{setting.level}")
+
             new_scene = create_game_scene()
             setting.create_new_window(new_scene)
         except IndexError:
