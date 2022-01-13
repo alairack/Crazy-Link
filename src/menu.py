@@ -1,4 +1,5 @@
 import cocos.director
+import pyglet.app
 from cocos.sprite import Sprite
 from cocos.scene import Scene
 from cocos.menu import *
@@ -7,7 +8,8 @@ from cocos.actions import *
 from pyglet.app import exit
 from cocos.layer import ColorLayer, Layer
 from game_scene import create_game_scene
-from settings import setting
+from setting_interface import create_setting_window
+from settings import setting, display_setting
 from pyglet import resource
 import logging
 
@@ -35,15 +37,16 @@ class MainMenu(Menu):
         self.font_title['color'] = (65, 105, 225, 255)
         self.font_title['bold'] = True
 
-        self.font_item['font_size'] = 45
+        self.font_item['font_size'] = 40
         self.font_item['bold'] = True
         self.font_item['color'] = (128, 128, 128, 255)
 
-        self.font_item_selected['font_size'] = 50
+        self.font_item_selected['font_size'] = 34
         self.font_item_selected['color'] = (255, 193, 37, 255)
 
         items = []
         items.append(MenuItem('play', self.on_play))
+        items.append(MenuItem("setting", self.on_setting))
         items.append(MenuItem('QUit', self.on_quit))
 
         self.create_menu(items, zoom_in(), zoom_out())
@@ -52,6 +55,15 @@ class MainMenu(Menu):
         game_scene = create_game_scene()
         setting.menu_scene = create_menu()
         cocos.director.director.replace(game_scene)
+
+    def on_setting(self):
+        window_height = cocos.director.director.window.height
+        window_width = cocos.director.director.window.width
+        window = cocos.director.director.window
+        display_setting.current_window_location = cocos.director.director.window.get_location()
+        window.close()
+        new_window = create_setting_window(window_width, window_height, display_setting.current_window_location)
+
 
     def on_quit(self):
         main_logger.info("quit game")
