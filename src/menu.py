@@ -78,7 +78,7 @@ class SpriteLayer(Layer):
         super().__init__()
 
         self.sprite_list = []
-        for fruit in setting.fruit_images[:-1]:
+        for fruit in setting.fruit_images[:-2]:
             sprite = Sprite(fruit)
             self.add(sprite)
             self.sprite_list.append(sprite)

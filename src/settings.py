@@ -20,7 +20,7 @@ class Settings:
                            {"level": 8, "time": 670, "row": 17, "column": 21},
                            {"level": 9, "time": 730, "row": 18, "column": 22}]
         self.fruits = ["ananas", 'apple', 'banana', 'cherry', 'durian', 'grape', 'lemon', 'mangosteen', 'orange',
-                       'pear', 'strawberry', 'watermelon', 'bird']
+                       'pear', 'strawberry', 'watermelon', 'bird', 'kiwi']
         self.square_size = 40      # 贴图大小
         self.click_anime = pyglet.resource.animation("res/click.gif")
         self.click_sound = pyglet.resource.media("res/click.wav", streaming=False)
@@ -127,7 +127,7 @@ class DisplaySetting(object):
             try:
                 file = open(self.config_path, "r")
             except FileNotFoundError:
-                file = self.export_config("w")
+                file = self.export_config("w+")
             return file
 
         self.config_file = get_config_file()
