@@ -36,19 +36,20 @@ class Settings:
         self.menu_scene = None
         self.create_menu_method = None
         for x in self.fruits:
-            if x == "apple":
-                image = pyglet.image.load(f"res/test/{x}.png")
-                texture = image.get_mipmapped_texture()
-                glBindTexture(GL_TEXTURE_2D, texture.id)
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
-                texture.width = 40
-                texture.height = 40
-                self.fruit_images.append(texture)
-            else:
-                image = pyglet.resource.image(f"res/test/{x}.png")
-                image.width = 40
-                image.height = 40
-                self.fruit_images.append(image)
+            image = pyglet.resource.image(f"res/test/{x}.png")
+            image.width = self.square_size
+            image.height = self.square_size
+            self.fruit_images.append(image)
+
+        """
+            image = pyglet.image.load(f"res/test/{x}.png")
+            texture = image.get_mipmapped_texture()
+            glBindTexture(GL_TEXTURE_2D, texture.id)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
+            texture.width = 40
+            texture.height = 40
+            self.fruit_images.append(texture)
+        """
 
     def create_new_window(self, scene):
         window_location = director.window.get_location()
@@ -70,30 +71,18 @@ class Settings:
         pyglet.resource.add_font("Cyberpunk-Regular.ttf")
 
     def run(self, window_location=None):
-        for key, value in display_setting.select_value.items():
-            if key == "msaa":
-                if value == 0:
-                    config = None
-                else:
-                    config = pyglet.gl.Config(sample_buffers=1, samples=int(display_setting.config_dict["msaa"][value].replace("X", "")))  # 去除字符串中的X
-            else:
-                if value == 1:
-                    value = None
-                else:
-                    value = True
-                if key == "vsync":
-                    vsync = value
-                elif key == "show_fps":
-                    show_fps = value
-                elif key == "fullscreen":
-                    fullscreen = value
+        if display_setting.select_value["msaa"] != 0:
+            config = pyglet.gl.Config(sample_buffers=1,
+                       samples=int(display_setting.config_dict["msaa"][display_setting.select_value["msaa"]].replace("X", "")))  # 去除字符串中的X
+        else:
+            config = None
 
         def run_game():
             director.init(caption="Crazy Link", style=pyglet.window.Window.WINDOW_STYLE_DEFAULT,
                           width=setting.level_info[setting.level]["column"] * (setting.square_size + 2) + 30,
                           height=setting.level_info[setting.level]["row"] * (setting.square_size + 2) + 65,
                           resizable=True,
-                          vsync=vsync, config=config, fullscreen=fullscreen)
+                          vsync=display_setting.select_value["vsync"], config=config, fullscreen=display_setting.select_value["fullscreen"])
 
             if window_location is not None:
                 director.window.set_location(window_location[0], window_location[1])
@@ -101,7 +90,7 @@ class Settings:
             logger.info(f"audio driver : {pyglet.media.get_audio_driver()}")  # 此代码理论上仅打印声音驱动名称，但可以使初次播放声音速度明显提升
 
             director.window.set_icon(setting.logo)
-            director.show_FPS = show_fps
+            director.show_FPS = display_setting.select_value["show_fps"]
             menu_scene = self.create_menu_method()
             director.run(menu_scene)
 
@@ -115,17 +104,17 @@ class DisplaySetting(object):
     def __init__(self):
         self.current_window_location = None
         self.init_select_value()
-        self.config_dict = {"msaa": ['disable', '2X', '4X', '8X', '16X'], "vsync": ['enable', 'disable'],
-                            "show_fps": ['enable', 'disable'], "fullscreen": ['enable', 'disable']}
+        self.config_dict = {"msaa": ['disable', '2X', '4X', '8X', '16X'], "vsync": ['disable', 'enable'],
+                            "show_fps": ['disable', 'enable'], "fullscreen": ['disable', 'enable']}
         self.config_path = "./crazy_link/config.inf"
         self.get_config()
 
     def init_select_value(self):
         self.select_value = {}
         self.select_value["msaa"] = 4
-        self.select_value["vsync"] = 0
-        self.select_value["show_fps"] = 1
-        self.select_value["fullscreen"] = 1
+        self.select_value["vsync"] = 1
+        self.select_value["show_fps"] = 0
+        self.select_value["fullscreen"] = 0
 
     def get_config(self):
 
@@ -143,7 +132,7 @@ class DisplaySetting(object):
 
         self.config_file = get_config_file()
         file_content = self.config_file.read()
-        file_content = file_content.replace(" ", '')    # 去掉空格; a
+        file_content = file_content.replace(" ", '')    # 去掉空格
         self.config_file.close()
         for line in file_content.splitlines():
             x = line.split(":")

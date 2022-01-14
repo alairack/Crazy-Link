@@ -1,5 +1,4 @@
 import cocos.director
-import pyglet.app
 from cocos.sprite import Sprite
 from cocos.scene import Scene
 from cocos.menu import *
@@ -63,7 +62,6 @@ class MainMenu(Menu):
         display_setting.current_window_location = cocos.director.director.window.get_location()
         window.close()
         new_window = create_setting_window(window_width, window_height, display_setting.current_window_location)
-
 
     def on_quit(self):
         main_logger.info("quit game")
@@ -140,14 +138,14 @@ class SpriteLayer1(Layer):
         super().__init__()
         self.eye_durian = Sprite(resource.image("res/durian_eye.png"))
         self.add(self.eye_durian)
-        self.eye_durian.position = (600, 236)
+        self.eye_durian.position = (680, 236)
         self.eye_durian.rotation = -20
         self.eye_durian.visible = False
-        self.eye_durian.do(Delay(4.6) + Repeat(CallFunc(self.eye_durian_sport) + Delay(19) + JumpTo((600, 236), 200, 5, 4) + Delay(2)))
+        self.eye_durian.do(Delay(4.6) + Repeat(CallFunc(self.eye_durian_sport) + Delay(19) + JumpTo((680, 236), 200, 5, 4) + Delay(2)))
 
     def eye_durian_sport(self):
         self.eye_durian.visible = True
-        self.eye_durian.do(MoveTo((578, 236), 1) + RotateTo(0, 1) + Delay(2) + MoveTo((600, 236), 1) + Delay(0.6) + CallFunc(self.eye_durian_change_position, (250, -16)))
+        self.eye_durian.do(MoveTo((650, 236), 1) + RotateTo(0, 1) + Delay(2) + MoveTo((680, 236), 1) + Delay(0.6) + CallFunc(self.eye_durian_change_position, (250, -16)))
         self.eye_durian.do(Delay(6) + MoveTo((250, 8), 1) + Delay(3) + MoveTo((250, -16), 1) + Delay(0.8) + CallFunc(self.eye_durian_change_position, (-15, 240)))
         self.eye_durian.do(Delay(13) + RotateTo(98, 1) + Delay(0.8) + MoveTo((5, 240), 1) + Delay(1.6) + MoveTo((-15, 240), 1))
 
