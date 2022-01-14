@@ -22,7 +22,7 @@ class Settings:
         self.fruits = ["ananas", 'apple', 'banana', 'cherry', 'durian', 'grape', 'lemon', 'mangosteen', 'orange',
                        'pear', 'strawberry', 'watermelon', 'bird']
         self.square_size = 40      # 贴图大小
-        self.click_anime = pyglet.resource.animation("res/click2.gif")
+        self.click_anime = pyglet.resource.animation("res/click.gif")
         self.click_sound = pyglet.resource.media("res/click.wav", streaming=False)
         self.un_click_sound = pyglet.resource.media("res/unclick.wav", streaming=False)
         self.remove_sound = pyglet.resource.media("res/remove_block.wav", streaming=False)
