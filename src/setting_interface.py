@@ -27,6 +27,7 @@ class OkButton(glooey.Button):
     def complete_config(self, w):
         display_setting.export_config("w")
         display_setting.config_file.close()
+        display_setting.current_window_location = self.get_window().get_location()
         self.get_window().close()
         setting.run(display_setting.current_window_location)
 

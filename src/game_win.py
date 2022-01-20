@@ -3,18 +3,18 @@ from cocos.layer import Layer
 from cocos.actions import Blink, Show, FadeIn, ScaleTo
 from cocos.text import Label
 from pyglet.window import key
+from settings import setting
 
 
 class WinLayer(Layer):
     is_event_handler = True
 
-    def __init__(self, setting):
+    def __init__(self):
         super().__init__()
         action = ScaleTo(2, 1.5) + Blink(10, 2) + Show()
         width, height = director.get_window_size()
 
         msg1 = self.create_text("恭喜！\n您通关了", 34, width // 2, height // 2)
-        self.setting = setting
         msg1.do(action)
 
         msg2 = self.create_text("press Enter back to menu", 32, width//2, height // 2 - 110)
@@ -35,4 +35,4 @@ class WinLayer(Layer):
 
     def on_key_press(self, k, _):
         if k == key.ENTER:
-            self.setting.create_new_window(self.setting.menu_scene)
+            setting.run(window_location=director.window.get_location(), exist_window=True)

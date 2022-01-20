@@ -67,7 +67,7 @@ class HUDLayer(Layer):
             self.progress_bar.scale_x = self.remain_time / self.level_time
 
         def game_over():
-            game_over_layer = GameOverLayer(self.setting)
+            game_over_layer = GameOverLayer()
             layer = self.current_scene.get_children()[0]
             layer.disable_input()
             self.setting.level = 0

@@ -4,6 +4,7 @@ from cocos.actions import MoveTo, FadeIn
 from cocos.text import Label
 from pyglet.window import key
 import logging
+from settings import setting, display_setting
 
 main_logger = logging.getLogger("main.setting")
 
@@ -11,7 +12,7 @@ main_logger = logging.getLogger("main.setting")
 class GameOverLayer(Layer):
     is_event_handler = True
 
-    def __init__(self, setting):
+    def __init__(self):
         super().__init__()
 
         main_logger.info("game is over")
@@ -19,7 +20,6 @@ class GameOverLayer(Layer):
         width, height = director.get_window_size()
 
         msg1 = self.create_text("Game Over", 54, width // 2, height)
-        self.setting = setting
         msg1.do(MoveTo((width//2, height//2), 1))
 
         msg2 = self.create_text("press Enter back to menu", 30, width//2, height//2 - 66)
@@ -39,4 +39,5 @@ class GameOverLayer(Layer):
 
     def on_key_press(self, k, _):
         if k == key.ENTER:
-            self.setting.create_new_window(self.setting.menu_scene)
+            display_setting.current_window_location = director.window.get_location()
+            setting.run(display_setting.current_window_location, exist_window=True)

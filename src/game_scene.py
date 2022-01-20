@@ -10,7 +10,7 @@ from cocos.director import director
 from cocos.actions import *
 from judge import *
 from HUD import HUDLayer
-from settings import setting
+from settings import setting, GameParticle
 import logging
 
 
@@ -69,6 +69,12 @@ class GameBackgroundLayer(ColorLayer):
                     if judge_remove([self.selected_block[0][2], self.selected_block[0][1]], [sprite_y, sprite_x],
                                     self.board.array):
                         click_sprite.un_click(self.selected_block[0][0], self.click_anime[0])
+                        particle_position_1 = (self.selected_block[0][0].position[0] + setting.square_size/2,
+                                               self.selected_block[0][0].position[1] + setting.square_size/2)
+                        particle_position_2 = (click_sprite.position[0] + setting.square_size/2,
+                                               click_sprite.position[1] + setting.square_size/2)
+                        self.create_particle(particle_position_1)
+                        self.create_particle(particle_position_2)
                         self.board.array[sprite_y][sprite_x] = 0
                         self.board.array[self.selected_block[0][2]][self.selected_block[0][1]] = 0
                         self.batch.remove(self.selected_block[0][0])
@@ -106,10 +112,10 @@ class GameBackgroundLayer(ColorLayer):
             main_logger.info(f"go into next level:{setting.level}")
 
             new_scene = create_game_scene()
-            setting.create_new_window(new_scene)
+            setting.run(scene=new_scene, exist_window=True, window_location=director.window.get_location())
         except IndexError:
             self.disable_input()
-            win_layer = WinLayer(setting)
+            win_layer = WinLayer()
             current_scene = self.get_ancestor(Scene)
             setting.level = 0
             current_scene.add(win_layer, z=2)
@@ -166,6 +172,11 @@ class GameBackgroundLayer(ColorLayer):
 
         self.schedule_interval(whether_execute_reset, 1/20)              # 设为20，消耗性能少一些
 
+    def create_particle(self, position):
+        particle = GameParticle()
+        particle.position = position
+        self.add(particle, z=2)
+
 
 class Board:
     def __init__(self):
@@ -185,7 +196,7 @@ class Board:
                 if fruit != 0:
                     sprite = Block(fruit)
                     sprite.position = j * setting.square_size + left + j*2, i * setting.square_size + bottom + i*2     # *2为空隙宽度
-                    batch.add(sprite, z=2, name=f"{i, j}")
+                    batch.add(sprite, z=1, name=f"{i, j}")
 
     def init_block(self):
         """

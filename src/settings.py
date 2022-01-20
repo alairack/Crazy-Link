@@ -1,5 +1,6 @@
 import pyglet.resource
 from cocos.director import director
+from cocos.particle_systems import Explosion
 import logging
 from pyglet.gl import *
 import sys
@@ -42,6 +43,7 @@ class Settings:
             self.fruit_images.append(image)
 
         """
+            启用mipmap和材质:
             image = pyglet.image.load(f"res/test/{x}.png")
             texture = image.get_mipmapped_texture()
             glBindTexture(GL_TEXTURE_2D, texture.id)
@@ -51,17 +53,6 @@ class Settings:
             self.fruit_images.append(texture)
         """
 
-    def create_new_window(self, scene):
-        window_location = director.window.get_location()
-        director.window.close()
-        director.init(caption="Crazy Link",
-                      width=self.level_info[self.level]["column"] * (self.square_size + 2) + 30,
-                      height=self.level_info[self.level]["row"] * (self.square_size + 2) + 65,
-                      resizable=True)
-        director.window.set_location(window_location[0], window_location[1])
-        director.window.set_icon(self.logo)
-        director.run(scene)
-
     def load_fonts(self):
         pyglet.resource.path.append('res/fonts')
         pyglet.resource.reindex()
@@ -70,13 +61,14 @@ class Settings:
         pyglet.resource.add_font('pcsenior.ttf')
         pyglet.resource.add_font("Cyberpunk-Regular.ttf")
 
-    def run(self, window_location=None):
+    def run(self, window_location=None, exist_window=False, scene=None):
         if display_setting.select_value["msaa"] != 0:
             config = pyglet.gl.Config(sample_buffers=1,
                        samples=int(display_setting.config_dict["msaa"][display_setting.select_value["msaa"]].replace("X", "")))  # 去除字符串中的X
         else:
             config = None
-
+        if exist_window:
+            director.window.close()
         def run_game():
             director.init(caption="Crazy Link", style=pyglet.window.Window.WINDOW_STYLE_DEFAULT,
                           width=setting.level_info[setting.level]["column"] * (setting.square_size + 2) + 30,
@@ -91,8 +83,11 @@ class Settings:
 
             director.window.set_icon(setting.logo)
             director.show_FPS = display_setting.select_value["show_fps"]
-            menu_scene = self.create_menu_method()
-            director.run(menu_scene)
+            if scene is None:
+                menu_scene = self.create_menu_method()
+                director.run(menu_scene)
+            else:
+                director.run(scene)
 
         try:
             run_game()
@@ -145,6 +140,13 @@ class DisplaySetting(object):
         for key, value in self.config_dict.items():
             f.write(f"{key}:{value[self.select_value[key]]}\n")
         return f
+
+
+class GameParticle(Explosion):
+    duration = 2
+    angle = 0.0
+    blend_additive = True
+    size = 3.0
 
 
 setting = Settings()
