@@ -10,7 +10,7 @@ from cocos.director import director
 from cocos.actions import *
 from judge import *
 from HUD import HUDLayer
-from settings import setting, GameParticle
+from settings import setting, GameParticle, display_setting
 import logging
 
 
@@ -73,8 +73,9 @@ class GameBackgroundLayer(ColorLayer):
                                                self.selected_block[0][0].position[1] + setting.square_size/2)
                         particle_position_2 = (click_sprite.position[0] + setting.square_size/2,
                                                click_sprite.position[1] + setting.square_size/2)
-                        self.create_particle(particle_position_1)
-                        self.create_particle(particle_position_2)
+                        if display_setting.select_value["particle"] != 0:
+                            self.create_particle(particle_position_1)
+                            self.create_particle(particle_position_2)
                         self.board.array[sprite_y][sprite_x] = 0
                         self.board.array[self.selected_block[0][2]][self.selected_block[0][1]] = 0
                         self.batch.remove(self.selected_block[0][0])
@@ -176,6 +177,10 @@ class GameBackgroundLayer(ColorLayer):
         particle = GameParticle()
         particle.position = position
         self.add(particle, z=2)
+        self.do(Delay(3) + CallFunc(self.delete_particle, particle))
+
+    def delete_particle(self, particle):
+        self.remove(particle)
 
 
 class Board:

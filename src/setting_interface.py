@@ -71,6 +71,7 @@ def create_button(grid):
     show_fps_button = create_option(grid, 0, 2, "显示fps", display_setting.config_dict["show_fps"], "show_fps", 0, 3)
     vsync_button = create_option(grid, 1, 0, 'vsync', display_setting.config_dict["vsync"], "vsync", 1, 1)
     fullscreen_button = create_option(grid, 1, 2, "全屏", display_setting.config_dict["fullscreen"], "fullscreen", 1, 3)
+    particle_button = create_option(grid, 2, 0, "粒子效果", display_setting.config_dict["particle"], "particle", 2, 1)
 
 
 def create_setting_window(width, height, window_location):
@@ -78,7 +79,7 @@ def create_setting_window(width, height, window_location):
     display_setting.current_window = window
     window.set_location(window_location[0], window_location[1])
     gui = glooey.Gui(window)
-    grid = glooey.Grid(3, 4)
+    grid = glooey.Grid(4, 4)
     gui.add(grid)
     create_button(grid)
     button_ok = OkButton()

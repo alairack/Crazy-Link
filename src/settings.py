@@ -100,7 +100,8 @@ class DisplaySetting(object):
         self.current_window_location = None
         self.init_select_value()
         self.config_dict = {"msaa": ['disable', '2X', '4X', '8X', '16X'], "vsync": ['disable', 'enable'],
-                            "show_fps": ['disable', 'enable'], "fullscreen": ['disable', 'enable']}
+                            "show_fps": ['disable', 'enable'], "fullscreen": ['disable', 'enable'],
+                            "particle": ["disable", 'enable']}
         self.config_path = "./crazy_link/config.inf"
         self.get_config()
 
@@ -110,6 +111,7 @@ class DisplaySetting(object):
         self.select_value["vsync"] = 1
         self.select_value["show_fps"] = 0
         self.select_value["fullscreen"] = 0
+        self.select_value["particle"] = 1
 
     def get_config(self):
 
